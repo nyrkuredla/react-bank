@@ -18,19 +18,19 @@ class AccountDetail extends Component {
         <div>Please select an account...</div>
       )
     }
-    const account = this.props.account[0]
+    const account = this.props.account
     console.log(this.props)
 
     return (
       <div className="col-md-6">
         <div className= "card">
           <div className= "card-block">
-            <h4 className= "card-title">{this.props.user[0].name}'s Account Information</h4>
+            <h4 className= "card-title">{this.props.user.name}'s Account Information</h4>
             <h6 className= "card-subtitle mb-2 text-muted">{account.accountType} Account</h6>
             <div className= "card-text">
               <div>Balance: ${account.balance}</div>
-              {/* <Transaction /> */}
-              <button className="btn btn-primary" onClick={() => this.props.toggleModal()}></button>
+              <Transaction show={this.props.isOpen} />
+              <button className="btn btn-primary" onClick={() => this.props.toggleModal()}>Withdrawal</button>
             </div>
           </div>
           <Link className="btn btn-primary" to="/users" >Back to List of Users</Link>
@@ -45,7 +45,8 @@ class AccountDetail extends Component {
 function mapStateToProps(state) {
   return {
     user: state.selectedUser,
-    account: state.selectedAccount
+    account: state.selectedAccount,
+    isOpen: state.isOpen
   };
 }
 

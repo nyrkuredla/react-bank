@@ -22,11 +22,9 @@ const reducer = function(state = initialState, action) {
           })
 
         case USER_SELECTED:
-            let selectedUser = state.users.filter((userInfo) => {
-              if(userInfo._id === action.payload) {
-                return true
-                  }
-                })
+          const userIndex = state.users.findIndex((user) => user._id === action.payload);
+          let selectedUser = state.users[userIndex];
+          console.log(selectedUser)
               return update(state, {
                 selectedUser: {
                   $set: selectedUser
@@ -35,15 +33,9 @@ const reducer = function(state = initialState, action) {
 
 
         case ACCOUNT_SELECTED:
-        let accounts = state.selectedUser[0].accounts;
-        let selectedAccount = accounts.filter((account) => {
-          if(account.id === action.payload) {
-            return true
-          }
-          else {
-            console.log('nope, no acct selected')
-          }
-        })
+        let accounts = state.selectedUser.accounts;
+        let accountIndex = accounts.findIndex((account) => account.id === action.payload);
+        let selectedAccount = accounts[accountIndex]
           return update(state, {
             selectedAccount: {
               $set: selectedAccount
@@ -51,24 +43,16 @@ const reducer = function(state = initialState, action) {
           })
 
         case WITHDRAW_FUNDS:
-            const userIdx = state.users.findIndex(user => user._id === state.selectedUser);
-            const accountIdx = state.users[userIdx].accounts.findIndex(account => account.id === state.selectedAccount);
+        let acctBalance = state.selectedAccount.balance;
+        let newBalance = (acctBalance - action.payload);
+        return update(state, {
+          selectedAccount: {
+            balance: {
+              $set: newBalance
+            }
+          }
+        })
 
-            return update(state, {
-                users: {
-                    [userIdx]: {
-                        accounts: {
-                            [accountIdx]: {
-                                balance: {
-                                    $apply: function(balance) {
-                                        return balance - action.payload
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            })
         default:
             return state;
     }
