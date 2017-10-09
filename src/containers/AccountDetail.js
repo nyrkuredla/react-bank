@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { selectAccount }  from '../actions/index';
+import { selectAccount, toggleModal }  from '../actions/index';
 //make sure action created flows through all reducers
 import { bindActionCreators } from 'redux';
 //import router Link
 import { Link } from 'react-router-dom';
+
+import Transaction from './Transaction'
 
 
 
@@ -16,7 +18,6 @@ class AccountDetail extends Component {
         <div>Please select an account...</div>
       )
     }
-    //get account id from params of URL
     const account = this.props.account[0]
     console.log(this.props)
 
@@ -28,7 +29,8 @@ class AccountDetail extends Component {
             <h6 className= "card-subtitle mb-2 text-muted">{account.accountType} Account</h6>
             <div className= "card-text">
               <div>Balance: ${account.balance}</div>
-
+              {/* <Transaction /> */}
+              <button className="btn btn-primary" onClick={() => this.props.toggleModal()}></button>
             </div>
           </div>
           <Link className="btn btn-primary" to="/users" >Back to List of Users</Link>
@@ -41,7 +43,6 @@ class AccountDetail extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log('account state!', state)
   return {
     user: state.selectedUser,
     account: state.selectedAccount
@@ -51,7 +52,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    selectAccount: selectAccount
+    selectAccount: selectAccount,
+    toggleModal: toggleModal
   }, dispatch)
 }
 

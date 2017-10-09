@@ -1,18 +1,27 @@
 import {combineReducers} from 'redux';
-import {USER_SELECTED, ACCOUNT_SELECTED, WITHDRAW_FUNDS} from '../actions/index';
+import {USER_SELECTED, ACCOUNT_SELECTED, WITHDRAW_FUNDS, TOGGLE_MODAL } from '../actions/index';
 import userList from '../data/users';
 import update from 'immutability-helper';
 
 const initialState = {
     users: userList(),
     selectedUser: null,
-    selectedAccount: null
+    selectedAccount: null,
+    isOpen: false
 }
 
 const reducer = function(state = initialState, action) {
     switch (action.type) {
+        case TOGGLE_MODAL:
+        let toggled = !state.isOpen;
+        console.log("err day I'm togglin ", toggled)
+          return update(state, {
+            isOpen: {
+              $set: toggled
+            }
+          })
+
         case USER_SELECTED:
-        console.log('user payload', action.payload)
             let selectedUser = state.users.filter((userInfo) => {
               if(userInfo._id === action.payload) {
                 return true
@@ -26,8 +35,6 @@ const reducer = function(state = initialState, action) {
 
 
         case ACCOUNT_SELECTED:
-        console.log('payload', action.payload)
-        console.log('state selected user', state.selectedUser)
         let accounts = state.selectedUser[0].accounts;
         let selectedAccount = accounts.filter((account) => {
           if(account.id === action.payload) {

@@ -1,6 +1,7 @@
 export const USER_SELECTED = "USER_SELECTED";
 export const ACCOUNT_SELECTED = "ACCOUNT_SELECTED";
 export const WITHDRAW_FUNDS = "WITHDRAW_FUNDS";
+export const TOGGLE_MODAL = "TOGGLE_MODAL";
 
 export function selectUser(userId) {
   return {
@@ -21,5 +22,11 @@ export function withdrawFunds(amount) {
     type: WITHDRAW_FUNDS,
     //need to change the amount to an integer value
     payload: parseInt(amount, 10)
+  }
+}
+
+export function toggleModal() {
+  return {
+    type: TOGGLE_MODAL,
   }
 }
